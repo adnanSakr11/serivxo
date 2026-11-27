@@ -5,6 +5,7 @@ const String craftsPic = 'assets/images/crafts.png';
 const String appLogo = 'assets/images/servixo logo.png';
 const String aiRobot = 'assets/images/Friendly AI Home Assistant Robot 1.png';
 const String onBoardingPic3 = 'assets/images/onboarding_pic_3.png';
+const String googleIcon = 'assets/images/google.png';
 
 class Gaps {
   final double h;

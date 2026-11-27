@@ -101,7 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               SizedBox(height: gaps.contentToButton),
 
-              AppButton(
+              AUthButton(
                 onTap: _next,
                 child: Center(
                   child: Text(
