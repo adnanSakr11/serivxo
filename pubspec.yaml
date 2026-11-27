@@ -1,0 +1,48 @@
+name: servixo
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  firebase_core: ^5.2.0
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"
+
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+
+  fonts:
+    - family: Judson
+      fonts:
+        - asset: assets/fonts/Judson-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Judson-Italic.ttf
+          weight: 500
+        - asset: assets/fonts/Judson-Bold.ttf
+          weight: 700
+
