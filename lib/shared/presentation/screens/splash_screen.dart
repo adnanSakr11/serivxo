@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:servixo/core/const/app_const.dart';
-import 'package:servixo/shared/presentation/widgets/current_screen_point.dart';
+
+import 'onboarding/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
