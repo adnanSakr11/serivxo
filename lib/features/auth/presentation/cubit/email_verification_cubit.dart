@@ -7,6 +7,7 @@ import '../../domain/usecases/check_email_verified_usecase.dart';
 part 'email_verification_state.dart';
 
 class EmailVerificationCubit extends Cubit<EmailVerificationState> {
+ void startCooldown() => _startCooldown();
   final SendEmailVerificationUseCase _sendUseCase;
   final CheckEmailVerifiedUseCase _checkUseCase;
 
@@ -68,6 +69,7 @@ class EmailVerificationCubit extends Cubit<EmailVerificationState> {
           timer.cancel();
 
           if (!isClosed) {
+            _cooldownTimer?.cancel();
             emit(const EmailVerificationUnverified());
           }
 

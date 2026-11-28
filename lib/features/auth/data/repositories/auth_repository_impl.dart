@@ -37,12 +37,16 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email,
     required String password,
     required String displayName,
+    required String phone,
+    required UserRole role,
   }) async {
     try {
       final user = await _dataSource.signUp(
         email: email,
         password: password,
         displayName: displayName,
+        phone: phone,
+        role: role,
       );
       return Right(user);
     } on AuthException catch (e) {
@@ -92,8 +96,6 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(UnknownFailure(e.toString()));
     }
   }
-
-
 
   @override
   Future<Either<Failure, void>> sendEmailVerification() async {

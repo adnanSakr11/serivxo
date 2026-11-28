@@ -7,14 +7,18 @@ class SignUpUseCase {
   final AuthRepository _repository;
   SignUpUseCase(this._repository);
 
-  Future<Either<Failure, AppUser>> call({
-    required String email,
-    required String password,
-    required String displayName,
-  }) =>
-      _repository.signUp(
-        email: email,
-        password: password,
-        displayName: displayName,
-      );
+Future<Either<Failure, AppUser>> call({
+  required String email,
+  required String password,
+  required String displayName,
+  required String phone,
+  required UserRole role,
+}) =>
+    _repository.signUp(
+      email: email,
+      password: password,
+      displayName: displayName,
+      phone: phone,
+      role: role,
+    );
 }

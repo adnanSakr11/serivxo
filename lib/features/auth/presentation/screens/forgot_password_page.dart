@@ -22,6 +22,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Forgot PassWord"),
+        backgroundColor: Colors.white,
+      ),
       backgroundColor: colors.background,
       body: SafeArea(
         child: Padding(
@@ -35,12 +40,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: colors.surface,
+                    color: colors.primary.withOpacity(0.9),
                   ),
                   child: Icon(
                     Icons.lock_reset,
                     size: 55,
-                    color: colors.onSurface.withOpacity(0.7),
+                    color: colors.surface,
                   ),
                 ),
               ),
@@ -119,6 +124,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 builder: (context, state) {
                   final isLoading = state is ForgotPasswordLoading;
                   return AuthButton(
+                    textColor: colors.surface,
                     text: isLoading ? 'Sending...' : 'Send Reset Link',
                     isLoading: isLoading,
                     onTap: isLoading

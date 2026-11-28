@@ -8,6 +8,7 @@ class GoogleSigninButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return BlocBuilder<GoogleAuthCubit, GoogleAuthState>(
       builder: (context, state) {
         final isLoading = state is GoogleAuthLoading;
@@ -19,13 +20,13 @@ class GoogleSigninButton extends StatelessWidget {
           child: Container(
             height: 56,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: colors.surface.withOpacity(0.85),
               borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.12),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+                  color: colors.primary.withOpacity(0.3),
+                  blurRadius: 3,
+                  offset: Offset(-3, 6),
                 ),
               ],
             ),
@@ -40,15 +41,21 @@ class GoogleSigninButton extends StatelessWidget {
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(googleIcon, height: 20, width: 20),
-                      const SizedBox(width: 12),
                       Text(
-                        'المتابعة بحساب جوجل',
+                        'Follow via Google account',
                         style: TextStyle(
                           fontFamily: fontFamily,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+
+                      const SizedBox(width: 12),
+                      Image.asset(
+                        googleIcon,
+                        height: 25,
+                        width: 25,
+                        color: colors.primary,
                       ),
                     ],
                   ),

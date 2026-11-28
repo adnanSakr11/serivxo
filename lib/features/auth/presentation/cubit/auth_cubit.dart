@@ -34,21 +34,25 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signUp({
-    required String email,
-    required String password,
-    required String displayName,
-  }) async {
-    emit(const AuthLoading());
-    final result = await _signUpUseCase(
-      email: email,
-      password: password,
-      displayName: displayName,
-    );
-    result.fold(
-      (failure) => emit(AuthError(failure.message)),
-      (user) => emit(AuthSuccess(user)),
-    );
-  }
+  required String email,
+  required String password,
+  required String displayName,
+  required String phone,
+  required UserRole role,
+}) async {
+  emit(const AuthLoading());
+  final result = await _signUpUseCase(
+    email: email,
+    password: password,
+    displayName: displayName,
+    phone: phone,
+    role: role,
+  );
+  result.fold(
+    (failure) => emit(AuthError(failure.message)),
+    (user) => emit(AuthSuccess(user)),
+  );
+}
 
   Future<void> signOut() async {
     emit(const AuthLoading());

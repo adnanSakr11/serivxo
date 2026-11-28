@@ -6,8 +6,11 @@ class UserModel extends AppUser {
     required super.uid,
     required super.name,
     required super.email,
+    super.phone,
+    super.role,
     super.photoUrl,
     super.isOnline,
+    super.emailVerified,
   });
 
   factory UserModel.fromFirestore(String uid, Map<String, dynamic> map) {
@@ -15,34 +18,43 @@ class UserModel extends AppUser {
       uid: uid,
       name: map['name'] as String? ?? '',
       email: map['email'] as String? ?? '',
+      phone: map['phone'] as String? ?? '',
+      role: UserRole.from(map['role'] as String?),
       photoUrl: map['photo'] as String?,
       isOnline: map['isOnline'] as bool? ?? false,
     );
   }
 
   Map<String, dynamic> toFirestore() => {
-        'name': name,
-        'email': email,
-        'photo': photoUrl,
-        'isOnline': isOnline,
-        'lastSeen': FieldValue.serverTimestamp(),
-      };
+    'name': name,
+    'email': email,
+    'phone': phone,
+    'role': role.value,
+    'photo': photoUrl,
+    'isOnline': isOnline,
+    'lastSeen': FieldValue.serverTimestamp(),
+  };
 
   Map<String, dynamic> toCreateMap() => {
-        'name': name,
-        'email': email,
-        'photo': photoUrl,
-        'friends': <String>[],
-        'isOnline': true,
-        'lastSeen': FieldValue.serverTimestamp(),
-        'createdAt': FieldValue.serverTimestamp(),
-      };
+    'name': name,
+    'email': email,
+    'phone': phone,
+    'role': role.value,
+    'photo': photoUrl,
+    'isOnline': true,
+    'setupComplete': false,
+    'lastSeen': FieldValue.serverTimestamp(),
+    'createdAt': FieldValue.serverTimestamp(),
+  };
 
   factory UserModel.fromAppUser(AppUser user) => UserModel(
-        uid: user.uid,
-        name: user.name,
-        email: user.email,
-        photoUrl: user.photoUrl,
-        isOnline: user.isOnline,
-      );
+    uid: user.uid,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    role: user.role,
+    photoUrl: user.photoUrl,
+    isOnline: user.isOnline,
+    emailVerified: user.emailVerified,
+  );
 }

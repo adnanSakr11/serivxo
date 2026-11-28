@@ -4,16 +4,19 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../core/config/app_config.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/logging/app_logger.dart';
+import '../../domain/entities/app_user.dart';
 import '../models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Stream<User?> get authStateChanges;
   Future<UserModel> signIn({required String email, required String password});
   Future<UserModel> signUp({
-    required String email,
-    required String password,
-    required String displayName,
-  });
+  required String email,
+  required String password,
+  required String displayName,
+  required String phone,
+  required UserRole role,
+});
   Future<UserModel> signInWithGoogle();
   Future<void> signOut();
   Future<void> sendPasswordResetEmail(String email);
@@ -55,28 +58,34 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> signUp({
-    required String email,
-    required String password,
-    required String displayName,
-  }) async {
+Future<UserModel> signUp({
+  required String email,
+  required String password,
+  required String displayName,
+  required String phone,
+  required UserRole role,
+}) async {
+  try {
+    final credential = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    await credential.user!.updateDisplayName(displayName);
     try {
-      final credential = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      await credential.user!.updateDisplayName(displayName);
-      try {
-        await credential.user!.sendEmailVerification();
-      } catch (e, st) {
-        AppLogger.e(
-            'Initial sendEmailVerification failed during signUp', e, st);
-      }
-      return _createUserDocument(credential.user!, displayName: displayName);
-    } on FirebaseAuthException catch (e) {
-      throw AuthException(code: e.code, message: _authErrorMessage(e.code));
+      await credential.user!.sendEmailVerification();
+    } catch (e, st) {
+      AppLogger.e('Initial sendEmailVerification failed during signUp', e, st);
     }
+    return _createUserDocument(
+      credential.user!,
+      displayName: displayName,
+      phone: phone,
+      role: role,
+    );
+  } on FirebaseAuthException catch (e) {
+    throw AuthException(code: e.code, message: _authErrorMessage(e.code));
   }
+}
 
   @override
   Future<UserModel> signInWithGoogle() async {
@@ -189,22 +198,29 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     return model;
   }
 
-  Future<UserModel> _createUserDocument(User user,
-      {required String displayName}) async {
-    final model = UserModel(
-      uid: user.uid,
-      name: displayName,
-      email: user.email ?? '',
-      photoUrl: user.photoURL,
-      isOnline: true,
-    );
-    await _firestore
-        .collection(AppConfig.usersCollection)
-        .doc(user.uid)
-        .set(model.toCreateMap());
-    AppLogger.i('Created new user document', user.uid);
-    return model;
-  }
+  Future<UserModel> _createUserDocument(
+  User user, {
+  required String displayName,
+  required String phone,
+  required UserRole role,
+}) async {
+  final model = UserModel(
+    uid: user.uid,
+    name: displayName,
+    email: user.email ?? '',
+    phone: phone,
+    role: role,
+    photoUrl: user.photoURL,
+    isOnline: true,
+    emailVerified: user.emailVerified,
+  );
+  await _firestore
+      .collection(AppConfig.usersCollection)
+      .doc(user.uid)
+      .set(model.toCreateMap());
+  AppLogger.i('Created new user document', user.uid);
+  return model;
+}
 
   String _authErrorMessage(String code) {
     switch (code) {

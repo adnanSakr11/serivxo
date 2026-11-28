@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AUthButton extends StatelessWidget {
+class AppButton extends StatelessWidget {
   void Function()? onTap;
   double? width;
   double? height;
   Color? backgroundColor;
   Widget? child;
-  AUthButton({
+  AppButton({
     super.key,
     this.onTap,
     this.width,
